@@ -23,7 +23,9 @@ Testy odbyły się na dwóch komputerach:
   - RAM: 8GB
   - System: Windows 11 Home 64-bit
 - Komputer 2 (`AMG`):
-
+  - Procesor: Intel Core i5-10400 @ 2.90GHz ; 6 rdzenie, 12 wątków
+  - RAM: 32GB
+  - System: Windows 11 Pro 64-bit
 
 ### Komputer 1 (`EDDY`)
 

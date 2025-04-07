@@ -13,6 +13,9 @@ namespace Lab3Konsola
 
         public CsvLogger(string fileName = "results.csv")
         {
+            string timestamp = DateTime.Now.ToString("yyyyMMdd_HHmmss");
+            string pcName = Environment.MachineName;
+            fileName = $"{pcName}_{timestamp}_{fileName}";
             string folder = Path.Combine(Directory.GetCurrentDirectory(), "wyniki");
             Directory.CreateDirectory(folder);
             filePath = Path.Combine(folder, fileName);

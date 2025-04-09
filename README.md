@@ -14,7 +14,7 @@
 Wykonanych zostało 10 testów dla każdej permutacji podanych parametrów:
 ```cs
 int[] sizes = { 200, 500, 1000 };
-int[] threadCounts = { 1, 2, 4, 8, 16 };
+int[] threadCounts = { 1, 2, 4, 6, 8, 10, 12, 16 };
 ```
 
 Testy odbyły się na dwóch komputerach:

@@ -16,35 +16,40 @@
 
             Console.WriteLine("\nTest wydajności mnożenia macierzy\n");
 
-            for (int i = 0; i < iterations; i++)
+            foreach (int size in sizes)
             {
-                Console.WriteLine($"\nIteracja {i + 1}/{iterations}\n");
-                foreach (int size in sizes)
+                Console.WriteLine($"\nRozmiar macierzy: {size}x{size}");
+                Matrix A = Matrix.GenerateRandom(size, size, seed: 1);
+                Matrix B = Matrix.GenerateRandom(size, size, seed: 2);
+
+                foreach (int threads in threadCounts)
                 {
-                    Matrix A = Matrix.GenerateRandom(size, size, seed: 1);
-                    Matrix B = Matrix.GenerateRandom(size, size, seed: 2);
-
-                    Console.WriteLine($"\nRozmiar macierzy: {size}x{size}");
-
-                    Console.WriteLine("Mnożenie macierzy używając Parallel:");
-                    foreach (int threads in threadCounts)
+                    // Obliczanie średniego czasu dla Parallel
+                    long totalParallelTime = 0;
+                    for (int i = 0; i < iterations; i++)
                     {
                         var watch = System.Diagnostics.Stopwatch.StartNew();
                         Matrix result = MatrixMultiplier.MultiplyParallel(A, B, threads);
                         watch.Stop();
-                        Console.WriteLine($"Wątki: {threads}, czas: {watch.ElapsedMilliseconds} ms");
-                        logger.Log(size, i + 1, threads, watch.ElapsedMilliseconds, "Parallel", machine);
+                        totalParallelTime += watch.ElapsedMilliseconds;
                     }
-                    Console.WriteLine("Mnożenie macierzy używając Threaded:");
-                    foreach (int threads in threadCounts)
+                    long averageParallelTime = totalParallelTime / iterations;
+                    Console.WriteLine($"[Parallel] Wątki: {threads}, średni czas: {averageParallelTime} ms");
+                    logger.Log(size, threads, averageParallelTime, "Parallel", machine);
+
+                    // Obliczanie średniego czasu dla Threaded
+                    long totalThreadedTime = 0;
+                    for (int i = 0; i < iterations; i++)
                     {
                         ThreadedMatrixMultiplier multiplier = new();
                         var watch = System.Diagnostics.Stopwatch.StartNew();
                         Matrix result = multiplier.Multiply(A, B, threads);
                         watch.Stop();
-                        Console.WriteLine($"Wątki: {threads}, czas: {watch.ElapsedMilliseconds} ms");
-                        logger.Log(size, i + 1, threads, watch.ElapsedMilliseconds, "Threaded", machine);
+                        totalThreadedTime += watch.ElapsedMilliseconds;
                     }
+                    long averageThreadedTime = totalThreadedTime / iterations;
+                    Console.WriteLine($"[Threaded] Wątki: {threads}, średni czas: {averageThreadedTime} ms");
+                    logger.Log(size, threads, averageThreadedTime, "Threaded", machine);
                 }
             }
         }

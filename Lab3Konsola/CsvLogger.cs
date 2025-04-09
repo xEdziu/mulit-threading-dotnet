@@ -21,15 +21,15 @@ namespace Lab3Konsola
             filePath = Path.Combine(folder, fileName);
         }
 
-        public void Log(int matrixSize, int iteration, int threads, long timeMs, string method, string machineName)
+        public void Log(int matrixSize, int threads, long timeMs, string method, string machineName)
         {
             if (!headerWritten && !File.Exists(filePath))
             {
-                File.AppendAllText(filePath, "Machine,MatrixSize,Iteration,Threads,TimeMs,Method\n");
+                File.AppendAllText(filePath, "Machine,MatrixSize,Threads,AvgTimeMs,Method\n");
                 headerWritten = true;
             }
 
-            string line = $"{machineName},{matrixSize},{iteration},{threads},{timeMs},{method}\n";
+            string line = $"{machineName},{matrixSize},{threads},{timeMs},{method}\n";
             File.AppendAllText(filePath, line);
         }
     }
